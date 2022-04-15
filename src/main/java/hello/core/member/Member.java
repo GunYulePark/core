@@ -9,7 +9,7 @@ public class Member {
     public Member(Long id, String name, Grade grade) {
         this.id = id;
         this.name = name;
-        this.grade = grade; // vip인지 여부
+        this.grade = grade; // Basic / Vip
     }
 
     public Long getId() {
