@@ -11,6 +11,6 @@ class ApplicationContextBasicFindTest {
     @Test
     @DisplayName("빈 이름으로 조회")
     void findBeanByName() {
-
+//test
     }
 }
