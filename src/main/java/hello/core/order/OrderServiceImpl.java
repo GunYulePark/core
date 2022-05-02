@@ -1,5 +1,6 @@
 package hello.core.order;
 
+import hello.core.AppConfig;
 import hello.core.discount.DiscountPolicy;
 import hello.core.discount.FixDiscountPolicy;
 import hello.core.discount.RateDiscountPolicy;
@@ -9,15 +10,26 @@ import hello.core.member.MemoryMemberRepository;
 
 public class OrderServiceImpl implements OrderService{
 
-    private final MemberRepository memberRepository = new MemoryMemberRepository();
+//    private final MemberRepository memberRepository = new MemoryMemberRepository();
+//    interface에만 의존하도록 AppConfig 사용
+    private final MemberRepository memberRepository;
+
 //    private final DiscountPolicy discountPolicy = new FixDiscountPolicy();
 //    private final DiscountPolicy discountPolicy = new RateDiscountPolicy();
-//    OrderService과 관련한 정보만을 선택해야 하는데, DiscountPolicy까지 선택하는 건 역할을 넘는 것이다.
+//    OrderService과 관련한 정보만을 선택해야 하는데, DiscountPolicydml의 종류까지 선택하는 건 역할을 넘는 것이다.
+//    구현체에도 의존하게 되어서 DIP 원칙을 어기게 된다.
 
-    //    interface에만 의존하도록
+    //    interface에만 의존하도록 AppConfig 사용
     private final DiscountPolicy discountPolicy;
-//    이렇게만 하면, null 뜬다.
-//    누군가 클라이언트인 OrderServiceImpl에 DiscountPolicy의 구현 객체를 대신 생성하고 주입해줘야 한다.
+
+//    AppConfig를 위해서 interface만 사용하려면 Constructor 써줘야 한다
+//    Constructor의 역할 : 객체를 생성하고, 초기화.
+//    Appconfig에서 OrderServiceImpl(memberRepository(), discountPolicy()); 사용할 수 있게 한다.
+//    흰색 : OrderServiceImpl(a, b) 외부에서 받아들인 argument / 파랑색 : OrderServiceImpl()함수 내부의 변수
+    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+        this.memberRepository = memberRepository;
+        this.discountPolicy = discountPolicy;
+    }
 
     @Override
 //    implements 하는 OrderService에 Override
